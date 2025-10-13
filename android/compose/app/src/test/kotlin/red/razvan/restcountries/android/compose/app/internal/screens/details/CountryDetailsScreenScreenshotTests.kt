@@ -40,7 +40,7 @@ class CountryDetailsScreenScreenshotTests {
   @Before
   fun before() {
     val engine = FakeImageLoaderEngine.Builder()
-      .intercept(country.flag.svg, ColorImage(Color.Red.toArgb()))
+      .intercept(country.flag.svg, ColorImage(Color.Red.toArgb(), width = 250))
       .build()
     val imageLoader = ImageLoader.Builder(paparazzi.context)
       .components { add(engine) }
