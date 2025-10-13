@@ -6,7 +6,6 @@ package red.razvan.restcountries.android.compose.app.internal.screens.details
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,14 +33,20 @@ import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
@@ -129,6 +134,15 @@ internal fun CountryDetailsScreen(
     }
   }
 
+  val contentScrollState = rememberScrollState()
+  var headerHeightPx by remember { mutableFloatStateOf(0f) }
+
+  val topAppBarScrollProgress by remember {
+    derivedStateOf {
+      (contentScrollState.value / headerHeightPx).coerceIn(0f, 1f)
+    }
+  }
+
   Scaffold(
     modifier = modifier
       .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection)
@@ -136,9 +150,15 @@ internal fun CountryDetailsScreen(
     topBar = {
       TopAppBar(
         title = {
-          if (state.country != null) {
+          state.country?.let { country ->
             Text(
-              text = stringResource(R.string.country_details_screen_title),
+              text = country.officialName,
+              modifier = Modifier
+                .graphicsLayer {
+                  alpha = topAppBarScrollProgress
+                },
+              maxLines = 1,
+              overflow = TextOverflow.Ellipsis,
             )
           }
         },
@@ -208,46 +228,82 @@ internal fun CountryDetailsScreen(
         )
       },
     ) {
-      if (state.country != null) {
-        CountryDetailsContent(
-          country = state.country,
-          contentPadding = contentPadding,
+      state.country?.let { country ->
+        Column(
           modifier = Modifier
-            .testTag("content"),
-        )
+            .testTag("content")
+            .verticalScroll(state = contentScrollState)
+            .fillMaxSize()
+            .padding(contentPadding),
+        ) {
+          Header(
+            country = country,
+            modifier = Modifier
+              .onGloballyPositioned { coordinates ->
+                headerHeightPx = coordinates.size.height.toFloat()
+              }
+              .graphicsLayer {
+                alpha = 1 - topAppBarScrollProgress
+              },
+          )
+          Column(
+            verticalArrangement = Arrangement
+              .spacedBy(4.dp),
+            modifier = Modifier
+              .padding(vertical = 20.dp, horizontal = 20.dp),
+          ) {
+            if (country.continents.isNotEmpty()) {
+              ContinentsCard(
+                continents = country.continents,
+              )
+            }
+
+            if (country.capital.isNotEmpty()) {
+              CapitalCard(
+                capitals = country.capital,
+              )
+            }
+
+            if (country.languages.isNotEmpty()) {
+              LanguagesCard(
+                languages = country.languages,
+              )
+            }
+
+            if (country.currencies.isNotEmpty()) {
+              CurrenciesCard(
+                currencies = country.currencies,
+              )
+            }
+
+            OtherDetailsCard(
+              emojiFlag = country.emojiFlag,
+            )
+          }
+        }
       }
     }
   }
 }
 
 @Composable
-private fun CountryDetailsContent(
+private fun Header(
   country: DetailedCountry,
   modifier: Modifier = Modifier,
-  contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
-  Column(
+  Row(
     modifier = modifier
-      .fillMaxSize()
-      .verticalScroll(rememberScrollState())
-      .padding(contentPadding),
+      .padding(vertical = 8.dp, horizontal = 20.dp),
+    horizontalArrangement = Arrangement.spacedBy(24.dp),
+    verticalAlignment = Alignment.CenterVertically,
   ) {
-    AsyncImage(
-      model = country.flag.svg,
-      contentDescription = country.flag.contentDescription,
-      modifier = Modifier
-        .height(220.dp)
-        .fillMaxWidth(),
-    )
-
     Column(
-      modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 20.dp, vertical = 20.dp),
+      modifier = Modifier.weight(1f),
+      verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
       Text(
         text = country.officialName,
-        style = MaterialTheme.typography.headlineMedium,
+        style = MaterialTheme.typography.headlineLarge,
         modifier = Modifier
           .fillMaxWidth(),
       )
@@ -259,46 +315,15 @@ private fun CountryDetailsContent(
             country.commonName,
           ),
           style = MaterialTheme.typography.titleSmall,
-          modifier = Modifier
-            .padding(vertical = 4.dp),
-        )
-      }
-
-      Column(
-        verticalArrangement = Arrangement
-          .spacedBy(4.dp),
-        modifier = Modifier
-          .padding(top = 16.dp),
-      ) {
-        if (country.continents.isNotEmpty()) {
-          ContinentsCard(
-            continents = country.continents,
-          )
-        }
-
-        if (country.capital.isNotEmpty()) {
-          CapitalCard(
-            capitals = country.capital,
-          )
-        }
-
-        if (country.languages.isNotEmpty()) {
-          LanguagesCard(
-            languages = country.languages,
-          )
-        }
-
-        if (country.currencies.isNotEmpty()) {
-          CurrenciesCard(
-            currencies = country.currencies,
-          )
-        }
-
-        OtherDetailsCard(
-          emojiFlag = country.emojiFlag,
         )
       }
     }
+    AsyncImage(
+      model = country.flag.svg,
+      contentDescription = country.flag.contentDescription,
+      modifier = Modifier
+        .height(56.dp),
+    )
   }
 }
 
