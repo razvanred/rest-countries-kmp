@@ -3,11 +3,11 @@
 
 package red.razvan.restcountries.android.compose.app
 
-import android.content.Intent
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.core.net.toUri
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,6 +19,12 @@ import red.razvan.restcountries.android.compose.app.internal.screens.countries.C
 import red.razvan.restcountries.android.compose.app.internal.screens.details.CountryDetailsScreen
 import red.razvan.restcountries.android.compose.app.internal.screens.licenses.LicensesScreen
 import red.razvan.restcountries.android.compose.design.RestCountriesTheme
+
+internal object RestCountriesAppTestTags {
+  const val COUNTRY_DETAILS_SCREEN = "country-details-screen"
+  const val COUNTRIES_SCREEN = "countries-screen"
+  const val LICENSES_SCREEN = "licenses-screen"
+}
 
 @Composable
 fun RestCountriesApp(
@@ -47,6 +53,8 @@ fun RestCountriesApp(
             navController
               .navigate(route = NavDestinations.LicensesScreen)
           },
+          modifier = Modifier
+            .testTag(RestCountriesAppTestTags.COUNTRIES_SCREEN),
         )
       }
 
@@ -56,6 +64,8 @@ fun RestCountriesApp(
         CountryDetailsScreen(
           countryId = destination.countryId,
           onNavigateUp = onNavigateUp,
+          modifier = Modifier
+            .testTag(RestCountriesAppTestTags.COUNTRY_DETAILS_SCREEN),
         )
       }
 
@@ -68,6 +78,8 @@ fun RestCountriesApp(
               .build()
               .launchUrl(context, url.toUri())
           },
+          modifier = Modifier
+            .testTag(RestCountriesAppTestTags.LICENSES_SCREEN),
         )
       }
     }

@@ -54,6 +54,7 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import red.razvan.restcountries.android.compose.app.R
 import red.razvan.restcountries.android.compose.app.internal.mappers.LocalNetworkFailureToMessageMapper
+import red.razvan.restcountries.android.compose.app.internal.screens.CommonTestTags
 import red.razvan.restcountries.android.compose.design.ConnectableCardProperties
 import red.razvan.restcountries.android.compose.design.ConnectedCardGroup
 import red.razvan.restcountries.android.compose.design.MoreOptionsVertButton
@@ -64,6 +65,10 @@ import red.razvan.restcountries.data.models.CountryId
 import red.razvan.restcountries.data.models.Currency
 import red.razvan.restcountries.data.models.DetailedCountry
 import red.razvan.restcountries.data.models.Language
+
+internal object CountryDetailsScreenTestTags {
+  const val CONTENT = "content"
+}
 
 @Composable
 internal fun CountryDetailsScreen(
@@ -203,7 +208,7 @@ internal fun CountryDetailsScreen(
           Snackbar(
             snackbarData = data,
             modifier = Modifier
-              .testTag("snackbar"),
+              .testTag(CommonTestTags.SNACKBAR),
           )
         }
       }
@@ -222,7 +227,7 @@ internal fun CountryDetailsScreen(
         Indicator(
           modifier = Modifier
             .align(Alignment.TopCenter)
-            .testTag("pull-to-refresh-indicator"),
+            .testTag(CommonTestTags.PULL_TO_REFRESH_INDICATOR),
           isRefreshing = state.isRefreshing,
           state = pullToRefreshState,
         )
@@ -231,7 +236,7 @@ internal fun CountryDetailsScreen(
       state.country?.let { country ->
         Column(
           modifier = Modifier
-            .testTag("content")
+            .testTag(CountryDetailsScreenTestTags.CONTENT)
             .verticalScroll(state = contentScrollState)
             .fillMaxSize()
             .padding(contentPadding),

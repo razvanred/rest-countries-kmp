@@ -7,6 +7,7 @@ import android.content.Context
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
+import red.razvan.restcountries.android.compose.app.internal.screens.CommonTestTags
 import red.razvan.restcountries.android.compose.design.R as DesignR
 
 class CommonFinders(
@@ -15,10 +16,10 @@ class CommonFinders(
 ) {
 
   fun findPullToRefreshIndicator() = composeTestRule
-    .onNodeWithTag(testTag = "pull-to-refresh-indicator")
+    .onNodeWithTag(testTag = CommonTestTags.PULL_TO_REFRESH_INDICATOR)
 
   fun findSnackbar() = composeTestRule
-    .onNodeWithTag(testTag = "snackbar")
+    .onNodeWithTag(testTag = CommonTestTags.SNACKBAR)
 
   fun findMoreOptionsButton() = composeTestRule
     .onNodeWithContentDescription(
