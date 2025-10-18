@@ -7,8 +7,10 @@ import android.app.Activity
 import android.app.Instrumentation
 import android.content.Context
 import android.content.Intent
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.core.net.toUri
@@ -29,6 +31,7 @@ import org.koin.test.KoinTest
 import red.razvan.restcountries.android.compose.app.AppModule
 import red.razvan.restcountries.android.compose.app.R
 import red.razvan.restcountries.android.compose.app.RestCountriesApp
+import red.razvan.restcountries.android.compose.app.RestCountriesAppTestTags
 import red.razvan.restcountries.android.domain.ObserveArtifacts
 import red.razvan.restcountries.domain.ObserveCountryListItems
 import red.razvan.restcountries.domain.ObserveDetailedCountryByIdOrNull
@@ -101,9 +104,8 @@ class RestCountriesAppNavigationTests : KoinTest {
       .onNodeWithText(text = SampleData.CountryListItems.Romania.officialName)
       .performClick()
 
-    composeTestRule
-      .onNodeWithText(text = context.getString(R.string.country_details_screen_title))
-      .assertExists()
+    findCountryDetailsScreen()
+      .assertIsDisplayed()
   }
 
   @Test
@@ -116,9 +118,8 @@ class RestCountriesAppNavigationTests : KoinTest {
       .onNodeWithText(text = context.getString(R.string.licenses_item_label))
       .performClick()
 
-    composeTestRule
-      .onNodeWithText(text = context.getString(R.string.licenses_screen_title))
-      .assertExists()
+    findLicensesScreen()
+      .assertIsDisplayed()
   }
 
   @Test
@@ -133,9 +134,8 @@ class RestCountriesAppNavigationTests : KoinTest {
 
     Espresso.pressBack()
 
-    composeTestRule
-      .onNodeWithText(text = context.getString(R.string.countries_list_screen_title))
-      .assertExists()
+    findCountriesScreen()
+      .assertIsDisplayed()
   }
 
   @Test
@@ -176,8 +176,16 @@ class RestCountriesAppNavigationTests : KoinTest {
 
     Espresso.pressBack()
 
-    composeTestRule
-      .onNodeWithText(text = context.getString(R.string.countries_list_screen_title))
-      .assertExists()
+    findCountriesScreen()
+      .assertIsDisplayed()
   }
+
+  private fun findCountriesScreen() = composeTestRule
+    .onNodeWithTag(RestCountriesAppTestTags.COUNTRIES_SCREEN)
+
+  private fun findCountryDetailsScreen() = composeTestRule
+    .onNodeWithTag(RestCountriesAppTestTags.COUNTRY_DETAILS_SCREEN)
+
+  private fun findLicensesScreen() = composeTestRule
+    .onNodeWithTag(RestCountriesAppTestTags.LICENSES_SCREEN)
 }

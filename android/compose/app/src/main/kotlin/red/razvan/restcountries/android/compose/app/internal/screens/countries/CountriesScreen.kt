@@ -48,6 +48,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import red.razvan.restcountries.android.compose.app.R
 import red.razvan.restcountries.android.compose.app.internal.mappers.LocalNetworkFailureToMessageMapper
+import red.razvan.restcountries.android.compose.app.internal.screens.CommonTestTags
 import red.razvan.restcountries.android.compose.design.MoreOptionsVertButton
 import red.razvan.restcountries.android.compose.design.RefreshDropdownMenuItem
 import red.razvan.restcountries.android.compose.design.RestCountriesTheme
@@ -163,7 +164,7 @@ internal fun CountriesScreen(
           Snackbar(
             snackbarData = data,
             modifier = Modifier
-              .testTag("snackbar"),
+              .testTag(CommonTestTags.SNACKBAR),
           )
         }
       }
@@ -180,7 +181,7 @@ internal fun CountriesScreen(
         Indicator(
           modifier = Modifier
             .align(Alignment.TopCenter)
-            .testTag("pull-to-refresh-indicator"),
+            .testTag(CommonTestTags.PULL_TO_REFRESH_INDICATOR),
           isRefreshing = state.isRefreshing,
           state = pullToRefreshState,
         )

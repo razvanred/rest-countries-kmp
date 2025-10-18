@@ -25,6 +25,7 @@ import org.koin.test.mock.declare
 import red.razvan.restcountries.android.compose.app.AppModule
 import red.razvan.restcountries.android.compose.app.R
 import red.razvan.restcountries.android.compose.app.internal.screens.details.CountryDetailsScreen
+import red.razvan.restcountries.android.compose.app.internal.screens.details.CountryDetailsScreenTestTags
 import red.razvan.restcountries.android.compose.design.RestCountriesTheme
 import red.razvan.restcountries.data.models.CountryId
 import red.razvan.restcountries.domain.ObserveDetailedCountryByIdOrNull
@@ -81,7 +82,7 @@ class CountryDetailsScreenTests : KoinTest {
       .assertIsNotDisplayed()
 
     composeTestRule
-      .onNodeWithText(text = expectedCountry.officialName)
+      .onNodeWithTag(CountryDetailsScreenTestTags.CONTENT)
       .assertIsDisplayed()
   }
 
@@ -183,7 +184,7 @@ class CountryDetailsScreenTests : KoinTest {
 
   private fun swipeToRefresh() {
     composeTestRule
-      .onNodeWithTag("content")
+      .onNodeWithTag(CountryDetailsScreenTestTags.CONTENT)
       .performTouchInput { swipeDown() }
   }
 
