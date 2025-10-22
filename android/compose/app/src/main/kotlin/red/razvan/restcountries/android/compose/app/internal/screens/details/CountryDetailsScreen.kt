@@ -3,6 +3,9 @@
 
 package red.razvan.restcountries.android.compose.app.internal.screens.details
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,7 +43,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.testTag
@@ -140,11 +142,10 @@ internal fun CountryDetailsScreen(
   }
 
   val contentScrollState = rememberScrollState()
-  var headerHeightPx by remember { mutableFloatStateOf(0f) }
-
-  val topAppBarScrollProgress by remember {
+  var headerTitleHeightPx by remember { mutableFloatStateOf(0f) }
+  val isAppBarTitleVisible by remember {
     derivedStateOf {
-      (contentScrollState.value / headerHeightPx).coerceIn(0f, 1f)
+      contentScrollState.value >= headerTitleHeightPx && headerTitleHeightPx != 0f
     }
   }
 
@@ -155,16 +156,14 @@ internal fun CountryDetailsScreen(
     topBar = {
       TopAppBar(
         title = {
-          state.country?.let { country ->
-            Text(
-              text = country.officialName,
-              modifier = Modifier
-                .graphicsLayer {
-                  alpha = topAppBarScrollProgress
-                },
-              maxLines = 1,
-              overflow = TextOverflow.Ellipsis,
-            )
+          AnimatedVisibility(visible = isAppBarTitleVisible, enter = fadeIn(), exit = fadeOut()) {
+            state.country?.let { country ->
+              Text(
+                text = country.officialName,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+              )
+            }
           }
         },
         actions = {
@@ -243,13 +242,9 @@ internal fun CountryDetailsScreen(
         ) {
           Header(
             country = country,
-            modifier = Modifier
-              .onGloballyPositioned { coordinates ->
-                headerHeightPx = coordinates.size.height.toFloat()
-              }
-              .graphicsLayer {
-                alpha = 1 - topAppBarScrollProgress
-              },
+            onTitleHeightPxChange = {
+              headerTitleHeightPx = it
+            },
           )
           Column(
             verticalArrangement = Arrangement
@@ -294,6 +289,7 @@ internal fun CountryDetailsScreen(
 @Composable
 private fun Header(
   country: DetailedCountry,
+  onTitleHeightPxChange: (Float) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   Row(
@@ -310,7 +306,10 @@ private fun Header(
         text = country.officialName,
         style = MaterialTheme.typography.headlineLarge,
         modifier = Modifier
-          .fillMaxWidth(),
+          .fillMaxWidth()
+          .onGloballyPositioned { coords ->
+            onTitleHeightPxChange(coords.size.height.toFloat())
+          },
       )
 
       if (country.isOfficialNameDifferentFromCommon) {
