@@ -7,14 +7,14 @@ The _one and only_ mobile application that displays the countries from the [REST
 
 <div align="center" style="margin:auto;vertical-align:middle;">
    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="docs/assets/pixel9a-dark-countries-screen.png" />
-      <source media="(prefers-color-scheme: light)" srcset="docs/assets/pixel9a-light-countries-screen.png" />
-      <img alt="Device screenshot of the Countries screen on a Pixel 9A" src="docs/assets/pixel9a-light-countries-screen.png" width="160" hspace="10" />
+      <source media="(prefers-color-scheme: dark)" srcset="docs/assets/pixel9pro-dark-countries-screen.png" />
+      <source media="(prefers-color-scheme: light)" srcset="docs/assets/pixel9pro-light-countries-screen.png" />
+      <img alt="Device screenshot of the Countries screen on a Pixel 9A" src="docs/assets/pixel9pro-light-countries-screen.png" width="160" hspace="10" />
    </picture>
    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="docs/assets/pixel9a-dark-details-screen.png" />
-      <source media="(prefers-color-scheme: light)" srcset="docs/assets/pixel9a-light-details-screen.png" />
-      <img alt='Device screenshot of the "Republic of Croatia" country detail screen on a Pixel 9A' src="docs/assets/pixel9a-light-details-screen.png" width="160" hspace="10" />
+      <source media="(prefers-color-scheme: dark)" srcset="docs/assets/pixel9pro-dark-details-screen.png" />
+      <source media="(prefers-color-scheme: light)" srcset="docs/assets/pixel9pro-light-details-screen.png" />
+      <img alt='Device screenshot of the "Republic of Croatia" country detail screen on a Pixel 9A' src="docs/assets/pixel9pro-light-details-screen.png" width="160" hspace="10" />
    </picture>
    <picture>
       <source media="(prefers-color-scheme: dark)" srcset="docs/assets/iphone16-dark-countries-screen.png" />
