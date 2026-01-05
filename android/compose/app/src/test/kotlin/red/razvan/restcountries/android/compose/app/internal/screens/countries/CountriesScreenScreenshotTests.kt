@@ -39,24 +39,25 @@ class CountriesScreenScreenshotTests {
     }
   }
 
-  @Test
-  fun `Data loaded with dropdown menu expanded`() {
-    paparazzi.gif(
-      view = ComposeView(paparazzi.context).apply {
-        setContent {
-          TestContent(
-            state = CountriesScreenUiState(
-              items = items,
-              isRefreshing = false,
-              isDropdownMenuExpanded = true,
-              networkFailure = null,
-            ),
-          )
-        }
-      },
-      end = 200L,
-    )
-  }
+//  TODO #155 Blocked by Paparazzi https://github.com/cashapp/paparazzi/issues/1988
+//  @Test
+//  fun `Data loaded with dropdown menu expanded`() {
+//    paparazzi.gif(
+//      view = ComposeView(paparazzi.context).apply {
+//        setContent {
+//          TestContent(
+//            state = CountriesScreenUiState(
+//              items = items,
+//              isRefreshing = false,
+//              isDropdownMenuExpanded = true,
+//              networkFailure = null,
+//            ),
+//          )
+//        }
+//      },
+//      end = 200L,
+//    )
+//  }
 
   @Test
   fun `Data loaded with network failure`() {
