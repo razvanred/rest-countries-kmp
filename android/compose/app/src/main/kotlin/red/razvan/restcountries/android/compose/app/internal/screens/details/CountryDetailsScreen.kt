@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -326,7 +326,7 @@ private fun Header(
       model = country.flag.svg,
       contentDescription = country.flag.contentDescription,
       modifier = Modifier
-        .height(56.dp),
+        .heightIn(max = 56.dp),
     )
   }
 }

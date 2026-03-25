@@ -40,7 +40,7 @@ class CountryDetailsScreenScreenshotTests {
   @Before
   fun before() {
     val engine = FakeImageLoaderEngine.Builder()
-      .intercept(country.flag.svg, ColorImage(Color.Red.toArgb(), width = 250))
+      .intercept(country.flag.svg, ColorImage(Color.Red.toArgb(), width = 350, height = 230))
       .build()
     val imageLoader = ImageLoader.Builder(paparazzi.context)
       .components { add(engine) }
@@ -62,24 +62,25 @@ class CountryDetailsScreenScreenshotTests {
     }
   }
 
-  @Test
-  fun `Data loaded with dropdown menu expanded`() {
-    paparazzi.gif(
-      view = ComposeView(paparazzi.context).apply {
-        setContent {
-          TestContent(
-            state = CountryDetailsUiState(
-              country = country,
-              isRefreshing = false,
-              isDropdownMenuExpanded = true,
-              networkFailure = null,
-            ),
-          )
-        }
-      },
-      end = 200L,
-    )
-  }
+//  TODO #155 Blocked by Paparazzi https://github.com/cashapp/paparazzi/issues/1988
+//  @Test
+//  fun `Data loaded with dropdown menu expanded`() {
+//    paparazzi.gif(
+//      view = ComposeView(paparazzi.context).apply {
+//        setContent {
+//          TestContent(
+//            state = CountryDetailsUiState(
+//              country = country,
+//              isRefreshing = false,
+//              isDropdownMenuExpanded = true,
+//              networkFailure = null,
+//            ),
+//          )
+//        }
+//      },
+//      end = 200L,
+//    )
+//  }
 
   @Test
   fun `Data loaded with network failure`() {
