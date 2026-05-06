@@ -114,8 +114,15 @@ jobs:
       - name: Check formatting
         run: swiftformat --lint .
 
+      - name: Generate Xcode project
+        run: tuist generate --no-open
+
       - name: Build Apple targets
-        run: tuist build
+        run: |
+          tuist xcodebuild build \
+            -workspace rest-countries.xcworkspace \
+            -scheme RestCountries \
+            -destination 'platform=iOS Simulator,name=iPhone 17'
 
       - name: Upload build reports
         if: always()
