@@ -37,7 +37,7 @@ androidx-test-core-ktx = { group = "androidx.test", name = "core-ktx", version =
 android-material = "com.google.android.material:material:1.13.0"
 android-tools-desugar = { group = "com.android.tools", name = "desugar_jdk_libs", version = "2.1.5" }
 
-androidx-browser = "androidx.browser:browser:1.9.0"
+androidx-browser = "androidx.browser:browser:1.10.0"
 
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
